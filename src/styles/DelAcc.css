@@ -1,0 +1,39 @@
+.title-del {
+    text-align: center;
+    font-size: 2.5em;
+    font-family: Poppins;
+    font-weight: 700;
+    color: black;
+  }
+  
+  .del-paragraf {
+    text-align: center;
+    font-size: 1.5em;
+    font-family: Poppins, monospace;
+    font-weight: 600;
+    margin: 0 auto;
+    max-width: 60%;
+    color: black;
+    padding-top: 1rem;
+  }
+  
+  @media only screen and (max-width: 1280px) {
+    .title-del {
+      text-align: center;
+      font-size: 2em;
+      font-family: Poppins;
+      font-weight: 700;
+      color: black;
+    }
+  
+    .del-paragraf {
+      text-align: center;
+      font-size: 0.75em;
+      font-family: Poppins, monospace;
+      font-weight: 600;
+      margin: 0 auto;
+      max-width: 80%;
+      color: black;
+      padding-top: 1rem;
+    }
+  }
