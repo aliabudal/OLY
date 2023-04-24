@@ -38,7 +38,7 @@ const Login = () => {
       .then((res) => {
         const { message } = res.data;
         setCookie("token", res.data.token, { path: "/" });
-        setCookie("id", res.data.data.id, { path: "/" });
+        setCookie("id", res.data.id, { path: "/" });
         MySwal.fire({
           title: "Hello!",
           text: "Login success.",

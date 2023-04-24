@@ -14,7 +14,7 @@ import MyCart from "pages/MyCart";
 import Home from "pages";
 
 // TODO: Adauagati backend!
-axios.defaults.baseURL = "localhost:5175";
+axios.defaults.baseURL = "https://localhost:5001";
 
 const App = () => {
   const [cookie, , removeCookie] = useCookies(["token"]);
