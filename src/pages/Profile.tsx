@@ -42,13 +42,13 @@ const Profile = () => {
         headers: { Authorization: `Bearer ${cookie.token}` },
       })
       .then((res) => {
-        const results = res.data.data;
-        setUserImage(results.user_image);
+        const results = res.data;
+        // setUserImage(results.user_image);
         setName(results.name);
         setEmail(results.email);
         setPhone(results.phone);
         setAddress(results.address);
-        setProducts(results.product);
+        // setProducts(results.product);
       })
       .catch((err) => {});
   };
