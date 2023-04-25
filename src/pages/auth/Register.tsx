@@ -18,6 +18,7 @@ const Register = () => {
   const [phone, setPhone] = useState<string>("");
   const [address, setAddress] = useState<string>("");
   const [password, setPassword] = useState<string>("");
+  const [profilePicture, setProfilePicture] = useState<File | null>(null);
 
   useEffect(() => {
     if (name && email && phone && address && password) {
@@ -36,6 +37,7 @@ const Register = () => {
       phone,
       address,
       password,
+      profilePicture,
     };
     await axios
       .post("register", body)
@@ -143,6 +145,16 @@ const Register = () => {
                     label="Register"
                     loading={loading || disabled}
                   />
+                  <label className="label">
+                  <span className="label-text">Profile Picture</span>
+                  <input
+                    type="file"
+                    accept="image/*"
+                    onChange={(e) => setProfilePicture(e.target.files?.[0] || null)}
+                    className="input input-bordered input-primary w-full bg-white"
+                    style={{ border: "4px solid #0276ab" }}
+                  />
+                </label>
                 </form>
                 <p className="text-black mx-auto mt-5">
                   Don't have an account?{" "}
