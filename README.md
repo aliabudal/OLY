@@ -3,15 +3,15 @@ This project was developed for the Software Engineering subject at the Faculty o
 Responsible for design: [Ahmad Ramadan](https://github.com/AhmedR111)\
 Responsible for front-end implementation: [Ali Abudal](https://github.com/aliabudal)\
 Responsible for back-end implementation: [Daniel Sohanian](https://github.com/Sohanian-Daniel)\
-Responsible for QA: Denis-Marius Vladu
+Responsible for QA: [Denis-Marius Vladu](https://github.com/dennisvld)
 
 # Running the project:
 To install all dependencies, use the following command:
 ```
-npm run install
+npm install
 ```
 
 To run the project, use the following command:
 ```
-npm dev run
+npm run dev
 ```
