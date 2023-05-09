@@ -74,7 +74,7 @@ const DetailProduct = () => {
     body.append("description", description);
 
     await axios
-      .put(`products/${productId}`, body, {
+      .put(`products/${id}`, body, {
         headers: { Authorization: `Bearer ${cookie.token}` },
       })
       .then((res) => {
@@ -98,7 +98,7 @@ const DetailProduct = () => {
   const handleDeleteProduct = async (e: React.FormEvent<HTMLButtonElement>) => {
     e.preventDefault();
     await axios
-      .delete(`products/${productId}`, {
+      .delete(`products/${id}`, {
         headers: { Authorization: `Bearer ${cookie.token}` },
       })
       .then((res) => {
