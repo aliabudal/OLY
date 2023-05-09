@@ -1,18 +1,19 @@
 export interface ProductType {
   id: number;
   product_id: number;
-  product_name: string;
+  name: string;
   stock: number;
   price: number;
-  product_images: string;
-  product_image: string;
+  image: string;
   user: UserType;
   address: string;
+  category: string;
+  description: string;
 }
 
 export interface UserType {
   user_id: number;
   name: string;
   address: string;
-  profilepicture: string;
+  image: string;
 }

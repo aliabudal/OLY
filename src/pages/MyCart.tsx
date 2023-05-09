@@ -13,7 +13,7 @@ interface TypeProduct {
   seller: string;
   quantity: number;
   amount: number;
-  product_image: string;
+  image: string;
 }
 
 const MyCart = () => {
@@ -26,7 +26,7 @@ const MyCart = () => {
     axios
       .get(`carts`)
       .then((res) => {
-        setProducts(res.data.data);
+        setProducts(res.data);
       })
       .catch((err) => {
         alert(err());

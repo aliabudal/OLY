@@ -22,7 +22,6 @@ const Profile = () => {
   const [getPhone, setPhone] = useState<string>("");
   const [getAddress, setAddress] = useState<string>("");
   const [products, setProducts] = useState<ProductType[]>([]);
-  const [file, setEditFile] = useState<any>();
   const [name, setEditName] = useState<string>("");
   const [email, setEditEmail] = useState<string>("");
   const [phone, setEditPhone] = useState<string>("");
@@ -238,7 +237,7 @@ const Profile = () => {
                       className="input input-bordered input-sm w-full max-w-xs border-customcyan"
                     />
                     <input
-                      onChange={(e) => setEditFile(e.target.files?.[0])}
+                      onChange={(e) => setImage(e.target.files?.[0])}
                       type="file"
                       className="file-input file-input-bordered w-full border-2 border-customcyan max-w-xs"
                     />
@@ -271,8 +270,8 @@ const Profile = () => {
               <ProductCard
                 key={product.product_id}
                 id={product.product_id}
-                image={product.product_image}
-                name={product.product_name}
+                image={product.image}
+                name={product.name}
                 price={product.price}
               />
             </div>

@@ -13,7 +13,7 @@ import ProductCard from "./ProductCard";
 interface TypeProduct {
   id: number;
   product_name: string;
-  product_image: string;
+  image: string;
   price: number;
   stock: number;
   description: string;
@@ -37,7 +37,7 @@ const Navbar = () => {
         headers: { Authorization: `Bearer ${cookie.token}` },
       })
       .then((res) => {
-        setProducts(res.data.data);
+        setProducts(res.data);
       })
       .catch((err) => {
         alert(err());

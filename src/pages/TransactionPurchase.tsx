@@ -22,7 +22,7 @@ interface Item {
   product_name: string;
   qty: number;
   amount: number;
-  product_image: string;
+  image: string;
 }
 
 const TransactionPurchase = () => {
@@ -36,7 +36,7 @@ const TransactionPurchase = () => {
     axios
       .get(`transactions/`)
       .then((res) => {
-        setProducts(res.data.data);
+        setProducts(res.data);
       })
       .catch((err) => {
         alert(err());

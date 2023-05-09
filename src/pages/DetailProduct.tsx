@@ -14,7 +14,7 @@ interface TypeProduct {
   product_name: string;
   stock: number;
   price: number;
-  product_image: string;
+  image: string;
   user: User;
   description: string;
 }
@@ -54,10 +54,10 @@ const DetailProduct = () => {
         headers: { Authorization: `Bearer ${cookie.token}` },
       })
       .then((res) => {
-        setUserImage(res.data.data.user.user_image);
-        setProductId(res.data.data.id);
-        setUserId(res.data.data.user.user_id);
-        setProduct(res.data.data);
+        setUserImage(res.data.user.user_image);
+        setProductId(res.data.id);
+        setUserId(res.data.user.user_id);
+        setProduct(res.data);
       })
       .catch((err) => {
         alert(err());
@@ -125,7 +125,7 @@ const DetailProduct = () => {
       <section className="flex justify-center items-center gap-10 mx-40 border-2 border-customcyan p-10 rounded-t-3xl">
         <div className="border-2 border-customcyan rounded-2xl p-4">
           <img
-            src={product?.product_image}
+            src={product?.image}
             alt="image"
             className="w-72 h-72 rounded-2xl"
           />

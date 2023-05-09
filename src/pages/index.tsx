@@ -15,7 +15,7 @@ interface TypeProduct {
   product_name: string;
   stock: number;
   price: number;
-  product_image: string;
+  image: string;
   user: User;
 }
 
@@ -42,7 +42,7 @@ function App() {
         headers: { Authorization: `Bearer ${cookie.token}` },
       })
       .then((res) => {
-        setProducts(res.data.data);
+        setProducts(res.data);
       })
       .catch((err) => {
         alert(err());
@@ -72,8 +72,8 @@ function App() {
             <ProductCard
               key={product.id}
               id={product.id}
-              image={product.product_images}
-              name={product.product_name}
+              image={product.image}
+              name={product.name}
               address={product.address}
               price={product.price}
             />

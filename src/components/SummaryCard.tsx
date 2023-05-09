@@ -8,7 +8,7 @@ const SummaryCard = (props: any) => {
         <div className="w-full bg-gray-50 shadow-md items-center px-10 py-2 flex justify-between rounded-box">
           <section className="flex gap-5">
               <img 
-                src={summaryproduct.product_image} 
+                src={summaryproduct.image} 
                 alt="shirt" 
                 className="w-28" 
               />
