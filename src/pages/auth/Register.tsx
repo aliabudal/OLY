@@ -18,7 +18,7 @@ const Register = () => {
   const [phone, setPhone] = useState<string>("");
   const [address, setAddress] = useState<string>("");
   const [password, setPassword] = useState<string>("");
-  const [profilePicture, setProfilePicture] = useState<File | null>(null);
+  const [profilePicture, setProfilePicture] = useState<any>();
 
   useEffect(() => {
     if (name && email && phone && address && password) {
@@ -31,36 +31,40 @@ const Register = () => {
   const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
     setLoading(true);
     e.preventDefault();
-    const body = {
-      name,
-      email,
-      phone,
-      address,
-      password,
-      profilePicture,
+    const reader = new FileReader();
+    reader.readAsDataURL(profilePicture);
+    reader.onload = async () => {
+      const body = {
+        name,
+        email,
+        phone,
+        address,
+        password,
+        profilePicture: reader.result,
+      };
+      await axios
+        .post("register", body)
+        .then((res) => {
+          const { message, data } = res.data;
+          MySwal.fire({
+            title: "Success",
+            text: "Account created",
+            showCancelButton: false,
+          });
+          if (res) {
+            navigate("/login");
+          }
+        })
+        .catch((err) => {
+          const { message } = err.response;
+          MySwal.fire({
+            title: "Failed",
+            text: "Please use another email",
+            showCancelButton: false,
+          });
+        })
+        .finally(() => setLoading(false));
     };
-    await axios
-      .post("register", body)
-      .then((res) => {
-        const { message, data } = res.data;
-        MySwal.fire({
-          title: "Success",
-          text: "Account created",
-          showCancelButton: false,
-        });
-        if (res) {
-          navigate("/login");
-        }
-      })
-      .catch((err) => {
-        const { message } = err.response;
-        MySwal.fire({
-          title: "Failed",
-          text: "Please use another email",
-          showCancelButton: false,
-        });
-      })
-      .finally(() => setLoading(false));
   };
 
   return (
@@ -146,15 +150,15 @@ const Register = () => {
                     loading={loading || disabled}
                   />
                   <label className="label">
-                  <span className="label-text">Profile Picture</span>
-                  <input
-                    type="file"
-                    accept="image/*"
-                    onChange={(e) => setProfilePicture(e.target.files?.[0] || null)}
-                    className="input input-bordered input-primary w-full bg-white"
-                    style={{ border: "4px solid #0276ab" }}
-                  />
-                </label>
+                    <span className="label-text">Profile Picture</span>
+                    <input
+                      type="file"
+                      accept="image/*"
+                      onChange={(e) => setProfilePicture(e.target.files?.[0])}
+                      className="input input-bordered input-primary w-full bg-white"
+                      style={{ border: "4px solid #0276ab" }}
+                    />
+                  </label>
                 </form>
                 <p className="text-black mx-auto mt-5">
                   Don't have an account?{" "}
