@@ -33,34 +33,39 @@ const AddNewProduct = () => {
   const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
     setLoading(true);
     e.preventDefault();
-    const body = new FormData();
-    body.append("name", name);
-    body.append("stock", stock);
-    body.append("price", price);
-    body.append("description", description);
-    body.append("image", image);
-    await axios
-      .post("products", body, {
-        headers: { Authorization: `Bearer ${cookie.token}` },
-      })
-      .then((res) => {
-        const { message } = res.data;
-        MySwal.fire({
-          title: "Success",
-          text: "New product added",
-          showCancelButton: false,
-        });
-        navigate("/");
-      })
-      .catch((err) => {
-        const { data } = err.response;
-        MySwal.fire({
-          title: "Try Again",
-          text: "Failed to add product",
-          showCancelButton: false,
-        });
-      })
-      .finally(() => setLoading(false));
+    const reader = new FileReader();
+    reader.readAsArrayBuffer(image);
+    reader.onload = async () => {
+      const body = {
+        name,
+        stock,
+        price,
+        description,
+        image: new Uint8Array(reader.result as ArrayBuffer),
+      };
+      await axios
+        .post("products", body, {
+          headers: { Authorization: `Bearer ${cookie.token}` },
+        })
+        .then((res) => {
+          const { message } = res.data;
+          MySwal.fire({
+            title: "Success",
+            text: "New product added",
+            showCancelButton: false,
+          });
+          navigate("/");
+        })
+        .catch((err) => {
+          const { data } = err.response;
+          MySwal.fire({
+            title: "Try Again",
+            text: "Failed to add product",
+            showCancelButton: false,
+          });
+        })
+        .finally(() => setLoading(false));
+    };
   };
 
   return (
