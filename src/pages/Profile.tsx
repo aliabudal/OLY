@@ -43,7 +43,7 @@ const Profile = () => {
       })
       .then((res) => {
         const results = res.data;
-        setImage(results.user_image);
+        setImage(results.image);
         setName(results.name);
         setEmail(results.email);
         setPhone(results.phone);
