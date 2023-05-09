@@ -41,7 +41,7 @@ const AddNewProduct = () => {
         stock,
         price,
         description,
-        image: new Uint8Array(reader.result as ArrayBuffer),
+        image: (reader.result as string).split(",")[1],
       };
       await axios
         .post("products", body, {
