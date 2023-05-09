@@ -54,7 +54,7 @@ const DetailProduct = () => {
         headers: { Authorization: `Bearer ${cookie.token}` },
       })
       .then((res) => {
-        setUserImage(res.data.user.user_image);
+        setUserImage(res.data.user.image);
         setProductId(res.data.id);
         setUserId(res.data.user.user_id);
         setProduct(res.data);
