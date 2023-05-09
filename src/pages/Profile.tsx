@@ -43,12 +43,11 @@ const Profile = () => {
       })
       .then((res) => {
         const results = res.data;
-        // setUserImage(results.user_image);
+        setImage(results.user_image);
         setName(results.name);
         setEmail(results.email);
         setPhone(results.phone);
         setAddress(results.address);
-        // setProducts(results.product);
       })
       .catch((err) => {});
   };
