@@ -16,7 +16,7 @@ const Profile = () => {
   const [cookie, , removeCookie] = useCookies(["token"]);
   const MySwal = withReactContent(Swal);
   const navigate = useNavigate();
-  const [getImage, setUserImage] = useState<string>("");
+  const [image, setImage] = useState<any>();
   const [getName, setName] = useState<string>("");
   const [getEmail, setEmail] = useState<string>("");
   const [getPhone, setPhone] = useState<string>("");
@@ -53,54 +53,40 @@ const Profile = () => {
       .catch((err) => {});
   };
 
-  // const fetchDataProfile = () => {
-  //   axios
-  //     .get(`users`)
-  //     .then((res) => {
-  //       console.log(res);
-  //       const results = res.data.data;
-  //       setUserImage(results.user_image);
-  //       setName(results.name);
-  //       setEmail(results.email);
-  //       setPhone(results.phone);
-  //       setAddress(results.address);
-  //     })
-  //     .catch((err) => {
-  //       alert(err.toString());
-  //     })
-  //     .finally(() => {});
-  // };
-
   const handleEditAccount = async (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
-    const body = new FormData();
-    body.append("file", file);
-    body.append("name", name);
-    body.append("email", email);
-    body.append("phone", phone);
-    body.append("address", address);
-    body.append("password", password);
-
-    await axios
-      .put(`users`, body, {
-        headers: { Authorization: `Bearer ${cookie.token}` },
-      })
-      .then((res) => {
-        MySwal.fire({
-          title: "Success",
-          text: "Profile updated",
-          showCancelButton: false,
+    const reader = new FileReader();
+    reader.readAsDataURL(image);
+    reader.onload = async () => {
+      const body = {
+        name,
+        email,
+        phone,
+        address,
+        password,
+        image: reader.result,
+      };
+      await axios
+        .put("users", body, {
+          headers: { Authorization: `Bearer ${cookie.token}` },
+        })
+        .then((res) => {
+          MySwal.fire({
+            title: "Success",
+            text: "Profile updated",
+            showCancelButton: false,
+          });
+          navigate(0);
+        })
+        .catch((err) => {
+          const { data } = err.response;
+          MySwal.fire({
+            title: "Failed",
+            text: data.message,
+            showCancelButton: false,
+          });
         });
-        navigate(0);
-      })
-      .catch((err) => {
-        const { data } = err.response;
-        MySwal.fire({
-          title: "Failed",
-          text: data.message,
-          showCancelButton: false,
-        });
-      });
+    };
   };
 
   const handleDeleteAccount = async (e: React.FormEvent<HTMLButtonElement>) => {
@@ -135,7 +121,7 @@ const Profile = () => {
       <section className="flex items-center gap-20 mx-40 mb-20 px-20 border-2 border-customcyan p-10 rounded-3xl">
         <div className="flex flex-col gap-2">
           <img
-            src={getImage}
+            src={image}
             alt="user-image"
             className="w-96 text-center border-4 border-customcyan rounded-full mb-4"
           />

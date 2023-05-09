@@ -41,6 +41,7 @@ const AddNewProduct = () => {
         stock,
         price,
         description,
+        category,
         image: reader.result,
       };
       await axios
