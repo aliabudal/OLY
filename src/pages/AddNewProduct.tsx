@@ -15,29 +15,30 @@ const AddNewProduct = () => {
   const MySwal = withReactContent(Swal);
   const [disabled, setDisabled] = useState<boolean>(true);
   const [loading, setLoading] = useState<boolean>(false);
-  const [file, setFile] = useState<any>();
-  const [product_name, setProductName] = useState<string>("");
+  const [image, setImage] = useState<any>();
+  const [name, setProductName] = useState<string>("");
   const [stock, setStock] = useState<string>("");
   const [price, setPrice] = useState<string>("");
   const [description, setDescription] = useState<string>("");
+  const [category, setCategory] = useState<string>("");
 
   useEffect(() => {
-    if (product_name && stock && price && description) {
+    if (name && stock && price && description && category) {
       setDisabled(false);
     } else {
       setDisabled(true);
     }
-  }, [product_name, stock, price, description]);
+  }, [name, stock, price, description, category]);
 
   const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
     setLoading(true);
     e.preventDefault();
     const body = new FormData();
-    body.append("product_name", product_name);
+    body.append("name", name);
     body.append("stock", stock);
     body.append("price", price);
     body.append("description", description);
-    body.append("file", file);
+    body.append("image", image);
     await axios
       .post("products", body, {
         headers: { Authorization: `Bearer ${cookie.token}` },
@@ -74,7 +75,7 @@ const AddNewProduct = () => {
             <form className="flex justify-center mt-5">
               <input
                 type="file"
-                onChange={(e) => setFile(e.target.files?.[0])}
+                onChange={(e) => setImage(e.target.files?.[0])}
                 className="file-input file-input-bordered w-full border-2 border-customcyan max-w-xs"
               />
             </form>
@@ -84,7 +85,7 @@ const AddNewProduct = () => {
               <div className="text-xl">
                 <div className="font-bold w-80">
                   <p>Name:</p>
-                  <p>{product_name}</p>
+                  <p>{name}</p>
                 </div>
                 <input
                   id="inputProduct-name"
@@ -111,7 +112,15 @@ const AddNewProduct = () => {
                     <span> ,-</span>
                   </span>
                 </div>
-
+                <div>
+                  <p>Category:</p>
+                  <select onChange={(e) => setCategory(e.target.value)}>
+                    <option value="">Select category</option>
+                    <option value="electronics">Electronics</option>
+                    <option value="clothing">Clothing</option>
+                    <option value="cars">Cars</option>
+                  </select>
+                </div>
                 <input
                   onChange={(e) => setPrice(e.target.value)}
                   type="text"
