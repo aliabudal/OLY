@@ -34,14 +34,14 @@ const AddNewProduct = () => {
     setLoading(true);
     e.preventDefault();
     const reader = new FileReader();
-    reader.readAsArrayBuffer(image);
+    reader.readAsDataURL(image);
     reader.onload = async () => {
       const body = {
         name,
         stock,
         price,
         description,
-        image: (reader.result as string).split(",")[1],
+        image: reader.result,
       };
       await axios
         .post("products", body, {
