@@ -18,29 +18,38 @@ interface TypeProduct {
   stock: number;
   description: string;
 }
+interface NavbarProps {
+  setSearchTerm: (term: string) => void;
+}
 
-const Navbar = () => {
+const Navbar: React.FC<NavbarProps> = ({ setSearchTerm }) => {
   const [cookie, , removeCookie] = useCookies(["token", "id"]);
   const navigate = useNavigate();
-  // const dispatch = useDispat();
   const checkToken = cookie.token;
   const MySwal = withReactContent(Swal);
   const [products, setProducts] = useState<TypeProduct[]>([]);
+  const [searchTerm, setSearchTermInternal] = useState("");
 
   useEffect(() => {
     fetchData();
-  }, []);
+  }, [searchTerm]);
+
+  const handleSearchTermChange = (term: string) => {
+    setSearchTermInternal(term);
+    setSearchTerm(term);
+  };
 
   const fetchData = async () => {
+    // console.log(`Sending searchTerm: ${searchTerm}`);
     await axios
-      .get(`search/`, {
+      .get(`products?searchTerm=${searchTerm}`, {
         headers: { Authorization: `Bearer ${cookie.token}` },
       })
       .then((res) => {
         setProducts(res.data);
       })
       .catch((err) => {
-        alert(err());
+        console.error(err);
       });
   };
 
@@ -59,7 +68,7 @@ const Navbar = () => {
     <div className="navbar sticky top-0 z-50 bg-gray-100 lg:px-10 shadow-lg mb-20 py-4">
       <section className="navbar-start">
         <Link to="/">
-        <span className="text-2xl font-bold text-indigo-600"> OLY </span>
+          <span className="text-2xl font-bold text-indigo-600"> OLY </span>
         </Link>
       </section>
       <section className="navbar-center">
@@ -68,6 +77,7 @@ const Navbar = () => {
             type="text"
             placeholder="What do you want to find?"
             className="w-60 py-2 px-3 rounded-l-lg border-y-2 border-l-2 border-customcyan bg-gray-100"
+            onChange={(e) => handleSearchTermChange(e.target.value)}
           />
           <button className="px-2 rounded-r-lg border-y-2 border-r-2 border-customcyan bg-gray-100">
             <div className="duration-300 hover:cursor-pointer  active:scale-75 text-gray-400">

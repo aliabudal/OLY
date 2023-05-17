@@ -30,28 +30,49 @@ function App() {
   const [cookie] = useCookies(["token"]);
   const checkToken = cookie.token;
   const [products, setProducts] = useState<ProductType[]>([]);
-  const [loading, setLoading] = useState<boolean>(true);
+  const [filteredProducts, setFilteredProducts] = useState<ProductType[]>([]);
+  const [searchTerm, setSearchTerm] = useState("");
 
   useEffect(() => {
+    console.log("Sending searchTerm:", searchTerm);
     fetchData();
-  }, []);
+  }, [searchTerm]);
+
+  useEffect(() => {
+    console.log("searchTerm:", searchTerm);
+    filterProducts();
+  }, [products, searchTerm]);
 
   const fetchData = async () => {
-    await axios
-      .get(`products/`, {
+    try {
+      const response = await axios.get(`products?searchTerm=${searchTerm}`, {
         headers: { Authorization: `Bearer ${cookie.token}` },
-      })
-      .then((res) => {
-        setProducts(res.data);
-      })
-      .catch((err) => {
-        alert(err());
       });
+      console.log("Received response data:", response.data);
+      setProducts(response.data);
+    } catch (error) {
+      console.error(error);
+    }
   };
+
+  const filterProducts = () => {
+    if (searchTerm.trim() === "") {
+      setFilteredProducts(products);
+    } else {
+      const filtered = products.filter((product) =>
+        product.name.toLowerCase().includes(searchTerm.toLowerCase())
+      );
+      console.log("Filtered Products:", filtered); // Log the filtered results
+      console.log(searchTerm);
+      setFilteredProducts(filtered); // Update the filteredProducts state
+    }
+  };
+
+  console.log("Products state:", products);
 
   return (
     <Layout>
-      <Navbar />
+      <Navbar setSearchTerm={setSearchTerm} />
       <div className="w-full hp-screen px-20 pb-20">
         <div className="flex-1">
           <h2
@@ -68,7 +89,7 @@ function App() {
           </h2>
         </div>
         <div className="grid grid-cols-5 gap-10">
-          {products.map((product) => (
+          {filteredProducts.map((product) => (
             <ProductCard
               key={product.id}
               id={product.id}

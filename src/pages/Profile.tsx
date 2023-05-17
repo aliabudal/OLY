@@ -27,13 +27,14 @@ const Profile = () => {
   const [phone, setEditPhone] = useState<string>("");
   const [address, setEditAddress] = useState<string>("");
   const [password, setEditPassword] = useState<string>("");
+  const [searchTerm, setSearchTerm] = useState("");
 
   useEffect(() => {
     if (!cookie.token) {
       navigate("/");
     }
     fetchDataProfile();
-  }, []);
+  }, [searchTerm]);
 
   const fetchDataProfile = async () => {
     await axios
@@ -48,7 +49,21 @@ const Profile = () => {
         setPhone(results.phone);
         setAddress(results.address);
       })
-      .catch((err) => {});
+      .catch((err) => {
+        console.error(err);
+      });
+
+    console.log(`Sending searchTerm: ${searchTerm}`);
+    await axios
+      .get(`products?searchTerm=${searchTerm}`, {
+        headers: { Authorization: `Bearer ${cookie.token}` },
+      })
+      .then((res) => {
+        setProducts(res.data);
+      })
+      .catch((err) => {
+        console.error(err);
+      });
   };
 
   const handleEditAccount = async (e: React.FormEvent<HTMLFormElement>) => {
@@ -114,7 +129,7 @@ const Profile = () => {
 
   return (
     <Layout>
-      <Navbar />
+      <Navbar setSearchTerm={() => {}} />{" "}
       <p className="text-center text-3xl font-bold mb-7">My Profile</p>
       <section className="flex items-center gap-20 mx-40 mb-20 px-20 border-2 border-customcyan p-10 rounded-3xl">
         <div className="flex flex-col gap-2">

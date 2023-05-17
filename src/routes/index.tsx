@@ -13,7 +13,6 @@ import Summary from "pages/Summary";
 import MyCart from "pages/MyCart";
 import Home from "pages";
 
-// TODO: Adauagati backend!
 axios.defaults.baseURL = "https://localhost:5001";
 
 const App = () => {
