@@ -43,7 +43,7 @@ const Summary = () => {
 
   return (
     <Layout>
-      <Navbar />
+      <Navbar setSearchTerm={() => {}} />{" "}
       <section className="flex justify-between items-center mx-40 mb-5">
         <p className="text-2xl font-bold text-black">Transaction Summary</p>
         <Link to="/my-cart">

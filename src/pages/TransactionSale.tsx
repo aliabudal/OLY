@@ -8,7 +8,7 @@ import Navbar from "components/Navbar";
 const TransactionSale = () => {
   return (
     <Layout>
-      <Navbar />
+      <Navbar setSearchTerm={() => {}} />{" "}
       <section className="flex justify-between items-center mx-40">
         <div className="flex">
           <Link to="/transaction-purchase">

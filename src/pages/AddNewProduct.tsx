@@ -71,7 +71,7 @@ const AddNewProduct = () => {
 
   return (
     <Layout>
-      <Navbar />
+      <Navbar setSearchTerm={() => {}} />{" "}
       <form className="mb-20" onSubmit={(e) => handleSubmit(e)}>
         <section className="flex justify-center items-center gap-10 mx-40 border-2 border-customcyan p-10 rounded-t-3xl">
           <div className="flex flex-col">

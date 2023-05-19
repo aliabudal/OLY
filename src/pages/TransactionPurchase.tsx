@@ -45,7 +45,7 @@ const TransactionPurchase = () => {
 
   return (
     <Layout>
-      <Navbar />
+      <Navbar setSearchTerm={() => {}} />{" "}
       <section className="flex justify-between items-center mx-40">
         <div className="flex">
           <p className="px-3 border-b-4 border-customcyan text-customcyan text-2xl font-bold hover:cursor-default">

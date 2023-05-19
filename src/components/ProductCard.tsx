@@ -43,7 +43,7 @@ const ProductCard: FC<CardProps> = ({
         {name}
       </h2>
       <p className="px-2 pt-2 pb-1">{address}</p>
-      <p className="px-2 font-semibold">{price}</p>
+      <p className="px-2 font-semibold">{price} RON</p>
     </div>
   );
 };

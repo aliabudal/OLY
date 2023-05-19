@@ -34,7 +34,7 @@ const MyCart = () => {
   }
   return (
     <Layout>
-      <Navbar />
+      <Navbar setSearchTerm={() => {}} />{" "}
       <section className="flex justify-between items-center mx-40 mb-5">
         <span className="text-2xl font-bold">My Cart</span>
         <Link to="/">

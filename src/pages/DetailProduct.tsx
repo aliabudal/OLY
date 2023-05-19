@@ -121,7 +121,7 @@ const DetailProduct = () => {
 
   return (
     <Layout>
-      <Navbar />
+      <Navbar setSearchTerm={() => {}} />{" "}
       <section className="flex justify-center items-center gap-10 mx-40 border-2 border-customcyan p-10 rounded-t-3xl">
         <div className="border-2 border-customcyan rounded-2xl p-4">
           <img
