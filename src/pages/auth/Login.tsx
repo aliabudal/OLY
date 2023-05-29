@@ -10,7 +10,7 @@ import Layout from "components/Layout";
 import Swal from "utils/Swal";
 
 const Login = () => {
-  const [, setCookie] = useCookies(["token", "id"]);
+  const [, setCookie] = useCookies(["token", "id", "role"]);
   const MySwal = withReactContent(Swal);
   const navigate = useNavigate();
   const [disabled, setDisabled] = useState<boolean>(true);
@@ -39,6 +39,8 @@ const Login = () => {
         const { message } = res.data;
         setCookie("token", res.data.token, { path: "/" });
         setCookie("id", res.data.id, { path: "/" });
+        setCookie("role", res.data.role, { path: "/" });
+        // console.log(res.data.role);
         MySwal.fire({
           title: "Hello!",
           text: "Login success.",

@@ -22,6 +22,7 @@ interface User {
   name: string;
   address: string;
   user_image: string;
+  role: string;
 }
 
 const Summary = () => {

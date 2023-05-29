@@ -24,13 +24,14 @@ interface User {
   name: string;
   address: string;
   profilepicture: string;
+  role: string;
 }
 
 const DetailProduct = () => {
   const navigate = useNavigate();
   const MySwal = withReactContent(Swal);
   const { id } = useParams();
-  const [cookie] = useCookies(["token", "id"]);
+  const [cookie] = useCookies(["token", "id", "role"]);
   const checkToken = cookie.token;
   const checkId = cookie.id;
   const [product, setProduct] = useState<TypeProduct>();
@@ -43,10 +44,25 @@ const DetailProduct = () => {
   const [price, setPrice] = useState<string>("");
   const [description, setDescription] = useState<string>("");
   const owner = checkId == userId;
+  const [userRole, setUserRole] = useState<string>("");
 
   useEffect(() => {
     fetchData();
+    fetchUserRole();
   }, []);
+
+  const fetchUserRole = async () => {
+    await axios
+      .get(`userRole/${checkId}`, {
+        headers: { Authorization: `Bearer ${cookie.token}` },
+      })
+      .then((res) => {
+        setUserRole(res.data.role);
+      })
+      .catch((err) => {
+        alert(err());
+      });
+  };
 
   const fetchData = async () => {
     await axios
@@ -57,7 +73,9 @@ const DetailProduct = () => {
         setUserImage(res.data.user.image);
         setProductId(res.data.id);
         setUserId(res.data.user.user_id);
+        setUserRole(res.data.user.role);
         setProduct(res.data);
+        // console.log("User Role: " + cookie.role);
       })
       .catch((err) => {
         alert(err());
@@ -164,114 +182,115 @@ const DetailProduct = () => {
         <span className="text-customcyan font-semibold">Description</span>
         <span>{product?.description}</span>
       </section>
-      {owner && (
-        <div className="flex justify-center gap-20 mb-20">
-          <form onSubmit={(e) => handleEditProduct(e)}>
-            <label htmlFor="my-modal-1">
-              <p className="text-4xl flex justify-center rounded-xl w-40 py-2 duration-300 hover:cursor-pointer active:scale-90 bg-customcyan text-gray-50">
-                <FaPenSquare />
-              </p>
-            </label>
-            <input type="checkbox" id="my-modal-1" className="modal-toggle" />
-            <div className="modal modal-bottom sm:modal-middle">
-              <div className="modal-box border-2 border-customcyan flex flex-col justify-center text-customcyan">
-                <p className="mb-5 pb-2 text-xl border-b-2 font-medium">
-                  Update Product
+      {owner ||
+        (cookie.role == "admin" && (
+          <div className="flex justify-center gap-20 mb-20">
+            <form onSubmit={(e) => handleEditProduct(e)}>
+              <label htmlFor="my-modal-1">
+                <p className="text-4xl flex justify-center rounded-xl w-40 py-2 duration-300 hover:cursor-pointer active:scale-90 bg-customcyan text-gray-50">
+                  <FaPenSquare />
                 </p>
-                <div className="flex justify-center gap-5">
-                  <div className="flex flex-col gap-5">
-                    <p className="py-1">Name:</p>
-                    <p className="py-1">Stock:</p>
-                    <p className="py-1">Price:</p>
-                    <p className="py-1">Description:</p>
-                    <p className="py-3">Select Image:</p>
-                  </div>
-                  <div className="flex flex-col gap-5">
-                    <input
-                      onChange={(e) => setProductName(e.target.value)}
-                      type="text"
-                      placeholder="Type new name"
-                      className="input input-bordered input-sm w-96 max-w-xs border-customcyan"
-                    />
-                    <input
-                      onChange={(e) => setStock(e.target.value)}
-                      type="text"
-                      placeholder="Type new stock"
-                      className="input input-bordered input-sm w-full max-w-xs border-customcyan"
-                    />
-                    <input
-                      onChange={(e) => setPrice(e.target.value)}
-                      type="text"
-                      placeholder="Type new price"
-                      className="input input-bordered input-sm w-full max-w-xs border-customcyan"
-                    />
-                    <input
-                      onChange={(e) => setDescription(e.target.value)}
-                      type="text"
-                      placeholder="Type new description"
-                      className="input input-bordered input-sm w-full max-w-xs border-customcyan"
-                    />
-                    <input
-                      onChange={(e) => setEditFile(e.target.files?.[0])}
-                      type="file"
-                      className="file-input file-input-bordered w-full border-2 border-customcyan max-w-xs"
-                    />
-                  </div>
-                </div>
-                <div className="modal-action">
-                  <button
-                    type="submit"
-                    className="w-20 text-sm text-center border-2 border-customcyan bg-customcyan rounded-xl py-1 text-gray-50 font-medium duration-300 hover:cursor-pointer  active:scale-90"
-                  >
-                    Update
-                  </button>
-                  <label
-                    htmlFor="my-modal-1"
-                    className="w-20 text-sm text-center border-2 border-customcyan rounded-xl py-1 text-customcyan font-medium duration-300 hover:cursor-pointer  active:scale-90"
-                  >
-                    Cancel
-                  </label>
-                </div>
-              </div>
-            </div>
-          </form>
-          <form>
-            <label htmlFor="my-modal-8">
-              <p className="text-4xl flex justify-center rounded-xl w-40 py-2 duration-300 hover:cursor-pointer active:scale-90 bg-red-600 text-gray-50">
-                <FaTrashAlt />
-              </p>
-            </label>
-            <input type="checkbox" id="my-modal-8" className="modal-toggle" />
-            <div className="modal modal-bottom sm:modal-middle">
-              <div className="modal-box border-2 border-customcyan">
-                <p className="mb-5 pb-2 text-xl border-b-2 font-medium text-customcyan">
-                  Delete Product
-                </p>
-                <div className="flex flex-col px-5">
-                  <p className="text-base font-medium text-justify">
-                    Are you sure want to delete this product?
+              </label>
+              <input type="checkbox" id="my-modal-1" className="modal-toggle" />
+              <div className="modal modal-bottom sm:modal-middle">
+                <div className="modal-box border-2 border-customcyan flex flex-col justify-center text-customcyan">
+                  <p className="mb-5 pb-2 text-xl border-b-2 font-medium">
+                    Update Product
                   </p>
-                </div>
-                <div className="modal-action">
-                  <button
-                    onClick={(e) => handleDeleteProduct(e)}
-                    type="submit"
-                    className="w-36 text-sm text-center border-2 border-red-600 bg-red-600 rounded-xl py-1 text-gray-50 font-medium duration-300 hover:cursor-pointer  active:scale-90"
-                  >
-                    Delete Account
-                  </button>
-                  <label
-                    htmlFor="my-modal-8"
-                    className="w-20 text-sm text-center border-2 border-customcyan rounded-xl py-1 text-customcyan font-medium duration-300 hover:cursor-pointer active:scale-90"
-                  >
-                    Cancel
-                  </label>
+                  <div className="flex justify-center gap-5">
+                    <div className="flex flex-col gap-5">
+                      <p className="py-1">Name:</p>
+                      <p className="py-1">Stock:</p>
+                      <p className="py-1">Price:</p>
+                      <p className="py-1">Description:</p>
+                      <p className="py-3">Select Image:</p>
+                    </div>
+                    <div className="flex flex-col gap-5">
+                      <input
+                        onChange={(e) => setProductName(e.target.value)}
+                        type="text"
+                        placeholder="Type new name"
+                        className="input input-bordered input-sm w-96 max-w-xs border-customcyan"
+                      />
+                      <input
+                        onChange={(e) => setStock(e.target.value)}
+                        type="text"
+                        placeholder="Type new stock"
+                        className="input input-bordered input-sm w-full max-w-xs border-customcyan"
+                      />
+                      <input
+                        onChange={(e) => setPrice(e.target.value)}
+                        type="text"
+                        placeholder="Type new price"
+                        className="input input-bordered input-sm w-full max-w-xs border-customcyan"
+                      />
+                      <input
+                        onChange={(e) => setDescription(e.target.value)}
+                        type="text"
+                        placeholder="Type new description"
+                        className="input input-bordered input-sm w-full max-w-xs border-customcyan"
+                      />
+                      <input
+                        onChange={(e) => setEditFile(e.target.files?.[0])}
+                        type="file"
+                        className="file-input file-input-bordered w-full border-2 border-customcyan max-w-xs"
+                      />
+                    </div>
+                  </div>
+                  <div className="modal-action">
+                    <button
+                      type="submit"
+                      className="w-20 text-sm text-center border-2 border-customcyan bg-customcyan rounded-xl py-1 text-gray-50 font-medium duration-300 hover:cursor-pointer  active:scale-90"
+                    >
+                      Update
+                    </button>
+                    <label
+                      htmlFor="my-modal-1"
+                      className="w-20 text-sm text-center border-2 border-customcyan rounded-xl py-1 text-customcyan font-medium duration-300 hover:cursor-pointer  active:scale-90"
+                    >
+                      Cancel
+                    </label>
+                  </div>
                 </div>
               </div>
-            </div>
-          </form>
-        </div>
-      )}
+            </form>
+            <form>
+              <label htmlFor="my-modal-8">
+                <p className="text-4xl flex justify-center rounded-xl w-40 py-2 duration-300 hover:cursor-pointer active:scale-90 bg-red-600 text-gray-50">
+                  <FaTrashAlt />
+                </p>
+              </label>
+              <input type="checkbox" id="my-modal-8" className="modal-toggle" />
+              <div className="modal modal-bottom sm:modal-middle">
+                <div className="modal-box border-2 border-customcyan">
+                  <p className="mb-5 pb-2 text-xl border-b-2 font-medium text-customcyan">
+                    Delete Product
+                  </p>
+                  <div className="flex flex-col px-5">
+                    <p className="text-base font-medium text-justify">
+                      Are you sure want to delete this product?
+                    </p>
+                  </div>
+                  <div className="modal-action">
+                    <button
+                      onClick={(e) => handleDeleteProduct(e)}
+                      type="submit"
+                      className="w-36 text-sm text-center border-2 border-red-600 bg-red-600 rounded-xl py-1 text-gray-50 font-medium duration-300 hover:cursor-pointer  active:scale-90"
+                    >
+                      Delete Account
+                    </button>
+                    <label
+                      htmlFor="my-modal-8"
+                      className="w-20 text-sm text-center border-2 border-customcyan rounded-xl py-1 text-customcyan font-medium duration-300 hover:cursor-pointer active:scale-90"
+                    >
+                      Cancel
+                    </label>
+                  </div>
+                </div>
+              </div>
+            </form>
+          </div>
+        ))}
     </Layout>
   );
 };
