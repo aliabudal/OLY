@@ -1,5 +1,5 @@
 import { useNavigate, useParams } from "react-router-dom";
-import { FaPenSquare, FaTrashAlt } from "react-icons/fa";
+import { FaPenSquare, FaTrashAlt, FaCreditCard } from "react-icons/fa";
 import withReactContent from "sweetalert2-react-content";
 import { useState, useEffect } from "react";
 import { useCookies } from "react-cookie";
@@ -45,6 +45,11 @@ const DetailProduct = () => {
   const [description, setDescription] = useState<string>("");
   const owner = checkId == userId;
   const [userRole, setUserRole] = useState<string>("");
+  // for paid promotion - will be sent to backend
+  const [card, setCard] = useState<string>("");
+  const [ownerName, setOwnerName] = useState<string>("");
+  const [CVV, setCVV] = useState<string>("");
+  const [expirationDate, setExpirationDate] = useState<string>("");
 
   useEffect(() => {
     fetchData();
@@ -81,6 +86,39 @@ const DetailProduct = () => {
       })
       .catch((err) => {
         alert(err());
+      });
+  };
+
+  const handleCreditCardSubmission = async (
+    e: React.FormEvent<HTMLFormElement>
+  ) => {
+    e.preventDefault();
+    const body = {
+      card,
+      ownerName,
+      CVV,
+      expirationDate,
+    };
+
+    await axios
+      .post(`creditCardInfo/${id}`, body, {
+        headers: { Authorization: `Bearer ${cookie.token}` },
+      })
+      .then((res) => {
+        MySwal.fire({
+          title: "Success",
+          text: "Credit card information sent",
+          showCancelButton: false,
+        });
+        navigate(0);
+      })
+      .catch((err) => {
+        const { data } = err.response;
+        MySwal.fire({
+          title: "Failed",
+          text: data.message,
+          showCancelButton: false,
+        });
       });
   };
 
@@ -251,6 +289,58 @@ const DetailProduct = () => {
                   >
                     Cancel
                   </label>
+                </div>
+              </div>
+            </div>
+          </form>
+          <form onSubmit={(e) => handleCreditCardSubmission(e)}>
+            <label htmlFor="my-modal-2">
+              <p className="text-4xl flex justify-center rounded-xl w-40 py-2 duration-300 hover:cursor-pointer active:scale-90 bg-customcyan text-gray-50">
+                <FaCreditCard />
+              </p>
+            </label>
+            <input type="checkbox" id="my-modal-2" className="modal-toggle" />
+            <div className="modal modal-bottom sm:modal-middle">
+              <div className="modal-box border-2 border-customcyan flex flex-col justify-center text-customcyan">
+                <p className="mb-5 pb-2 text-xl border-b-2 font-medium">
+                  Submit Credit Card Info
+                </p>
+                <input
+                  onChange={(e) => setCard(e.target.value)}
+                  type="text"
+                  placeholder="Card Number"
+                  className="input input-bordered input-sm w-96 max-w-xs border-customcyan"
+                />
+                <input
+                  onChange={(e) => setOwnerName(e.target.value)}
+                  type="text"
+                  placeholder="Owner Name"
+                  className="input input-bordered input-sm w-full max-w-xs border-customcyan"
+                />
+                <input
+                  onChange={(e) => setCVV(e.target.value)}
+                  type="text"
+                  placeholder="CVV"
+                  className="input input-bordered input-sm w-full max-w-xs border-customcyan"
+                />
+                <input
+                  onChange={(e) => setExpirationDate(e.target.value)}
+                  type="text"
+                  placeholder="Expiration Date"
+                  className="input input-bordered input-sm w-full max-w-xs border-customcyan"
+                />
+                <div className="modal-action">
+                  <button
+                    type="submit"
+                    className="btn text-white bg-customcyan"
+                  >
+                    Submit
+                  </button>
+                  <a href="#" className="btn">
+                    <label htmlFor="my-modal-2" className="btn">
+                      Close
+                    </label>
+                  </a>
                 </div>
               </div>
             </div>
