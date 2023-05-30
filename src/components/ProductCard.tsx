@@ -7,17 +7,9 @@ interface CardProps {
   name?: string;
   address?: string;
   price?: number;
-  onClickCart?: () => void;
 }
 
-const ProductCard: FC<CardProps> = ({
-  id,
-  image,
-  name,
-  address,
-  price,
-  onClickCart,
-}) => {
+const ProductCard: FC<CardProps> = ({ id, image, name, address, price }) => {
   const navigate = useNavigate();
 
   function onClickDetail() {

@@ -213,9 +213,6 @@ const DetailProduct = () => {
               </div>
             </div>
           </div>
-          <div className="flex justify-center border-2 bg-customcyan rounded-2xl p-3 text-white font-semibold duration-300 hover:cursor-pointer  active:scale-95">
-            Add to cart
-          </div>
         </div>
       </section>
       <section className="flex flex-col gap-5 mx-40 mt-5 mb-10 border-2 border-customcyan p-10 rounded-b-3xl">

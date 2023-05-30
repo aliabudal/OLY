@@ -1,4 +1,4 @@
-import { FaShoppingCart, FaClipboardList, FaUserCircle } from "react-icons/fa";
+import { FaClipboardList, FaUserCircle } from "react-icons/fa";
 import withReactContent from "sweetalert2-react-content";
 import { Link, useNavigate } from "react-router-dom";
 import { BiSearchAlt } from "react-icons/bi";
@@ -113,18 +113,6 @@ const Navbar: React.FC<NavbarProps> = ({ setSearchTerm }) => {
         )}
         {checkToken && (
           <section className="flex items-center gap-3">
-            <div className="hidden lg:flex lg:gap-3">
-              <Link to="/my-cart">
-                <div className="duration-300 hover:cursor-pointer  active:scale-90 text-customcyan">
-                  <FaShoppingCart size={30} />
-                </div>
-              </Link>
-              <Link to="/transaction-purchase">
-                <div className="duration-300 hover:cursor-pointer  active:scale-90 text-customcyan">
-                  <FaClipboardList size={30} />
-                </div>
-              </Link>
-            </div>
             <div className="dropdown dropdown-end flex items-center">
               <label
                 tabIndex={0}
@@ -141,16 +129,6 @@ const Navbar: React.FC<NavbarProps> = ({ setSearchTerm }) => {
                 <Link to="/profile">
                   <li className="px-3 py-1 rounded-lg duration-300 hover:bg-gray-200 hover:cursor-pointer active:bg-customcyan active:scale-90">
                     <p>Profile</p>
-                  </li>
-                </Link>
-                <Link to="/my-cart">
-                  <li className="px-3 py-1 rounded-lg duration-300 hover:bg-gray-200 hover:cursor-pointer active:bg-customcyan active:scale-90 lg:hidden">
-                    <p>My Cart</p>
-                  </li>
-                </Link>
-                <Link to="/transaction-purchase">
-                  <li className="px-3 py-1 rounded-lg duration-300 hover:bg-gray-200 hover:cursor-pointer active:bg-customcyan active:scale-90 lg:hidden">
-                    <p>Transactions</p>
                   </li>
                 </Link>
                 <li
