@@ -1,5 +1,11 @@
 import { useNavigate, useParams } from "react-router-dom";
-import { FaPenSquare, FaTrashAlt, FaCreditCard } from "react-icons/fa";
+import {
+  FaPenSquare,
+  FaTrashAlt,
+  FaCreditCard,
+  FaThumbsUp,
+  FaThumbsDown,
+} from "react-icons/fa";
 import withReactContent from "sweetalert2-react-content";
 import { useState, useEffect } from "react";
 import { useCookies } from "react-cookie";
@@ -56,6 +62,13 @@ const DetailProduct = () => {
   const [email, setEmail] = useState<string>("");
   const [phone, setPhone] = useState<string>("");
   const [showContactInfo, setShowContactInfo] = useState(false);
+  // SIUUUUUUUUUU
+  const [positiveReviews, setPositiveReviews] = useState(
+    parseInt(localStorage.getItem("positiveReviews") ?? "0")
+  );
+  const [negativeReviews, setNegativeReviews] = useState(
+    parseInt(localStorage.getItem("negativeReviews") ?? "0")
+  );
 
   useEffect(() => {
     fetchData();
@@ -65,6 +78,25 @@ const DetailProduct = () => {
 
   const handleClick = () => {
     setShowContactInfo(!showContactInfo);
+  };
+
+  useEffect(() => {
+    localStorage.setItem("positiveReviews", positiveReviews.toString());
+    localStorage.setItem("negativeReviews", negativeReviews.toString());
+  }, [positiveReviews, negativeReviews]);
+
+  const handleThumbsUp = () => {
+    setPositiveReviews((prevPositiveReviews) => prevPositiveReviews + 1);
+  };
+
+  const handleThumbsDown = () => {
+    setNegativeReviews((prevNegativeReviews) => prevNegativeReviews + 1);
+  };
+
+  const handleReset = () => {
+    localStorage.clear();
+    setPositiveReviews(0);
+    setNegativeReviews(0);
   };
 
   const fetchUserRole = async () => {
@@ -205,117 +237,149 @@ const DetailProduct = () => {
 
   return (
     <Layout>
-      <Navbar setSearchTerm={() => {}} />{" "}
-      <section className="flex justify-center items-center gap-10 mx-40 border-2 border-customcyan p-10 rounded-t-3xl">
-        <div className="border-2 border-customcyan rounded-2xl p-4">
-          <img
-            src={product?.image}
-            alt="image"
-            className="w-72 h-72 rounded-2xl"
-          />
-        </div>
-        <div className="flex flex-col gap-16">
-          <div className="flex items-center gap-10">
-            <div className="flex flex-col gap-5 w-3/5">
-              <div className="font-bold text-xl">{product?.product_name}</div>
+      <Navbar setSearchTerm={() => {}} />
+
+      <section className="flex flex-col items-center gap-10 mx-10 md:mx-40 border-2 border-customcyan p-10 rounded-t-3xl">
+        <div className="flex flex-col items-center gap-5">
+          <div className="h-80 w-80 border-2 border-customcyan rounded-2xl p-2 flex-shrink-0">
+            <img
+              className="w-full h-full object-cover rounded-2xl"
+              src={product?.image}
+              alt="product image"
+            />
+          </div>
+
+          <div className="flex flex-col justify-center items-center gap-5">
+            <div className="font-bold text-xl">{product?.product_name}</div>
+            <div className="flex items-center">
               <div className="text-gray-500">Stock: {product?.stock}</div>
-              <div className="w-fit py-2 px-5 mt-1 border-2 border-customcyan rounded-xl text-center">
-                RON {product?.price}
-              </div>
             </div>
-            <div>
-              <div className="flex items-center gap-5 border-2 border-customcyan rounded-2xl p-5">
-                <div className="h-full flex items-center border-2 border-customcyan rounded-2xl p-2">
-                  <img
-                    className="w-80 rounded-xl"
-                    src={userImage}
-                    alt="image"
-                  />
-                </div>
-                <div className="flex flex-col gap-2">
-                  <span className="font-semibold">{product?.user.name}</span>
-                  <span>{product?.user.address}</span>
-                  <button onClick={handleClick} style={{ color: "green" }}>
-                    Contact
-                  </button>
-                  {showContactInfo && (
-                    <div
-                      style={{
-                        position: "fixed",
-                        top: 0,
-                        left: 0,
-                        width: "100%",
-                        height: "100%",
-                        backgroundColor: "rgba(0, 0, 0, 0.5)",
-                        display: "flex",
-                        justifyContent: "center",
-                        alignItems: "center",
-                      }}
-                    >
-                      <div
-                        style={{
-                          backgroundColor: "white",
-                          padding: "40px",
-                          borderRadius: "10px",
-                          width: "50%",
-                          textAlign: "center",
-                        }}
-                      >
-                        <h2>Contact Information</h2>
-                        <form>
-                          <div
-                            style={{
-                              display: "flex",
-                              flexDirection: "column",
-                              alignItems: "flex-start",
-                            }}
-                          >
-                            <label
-                              style={{
-                                display: "flex",
-                                alignItems: "center",
-                                marginBottom: "10px",
-                              }}
-                            >
-                              <span style={{ marginRight: "10px" }}>
-                                Email:
-                              </span>
-                              <input type="email" value={email} readOnly />
-                            </label>
-                            <label
-                              style={{
-                                display: "flex",
-                                alignItems: "center",
-                                marginBottom: "10px",
-                              }}
-                            >
-                              <span style={{ marginRight: "10px" }}>
-                                Phone:
-                              </span>
-                              <input type="tel" value={phone} readOnly />
-                            </label>
-                          </div>
-                          <button
-                            onClick={handleClick}
-                            style={{ color: "red", marginTop: "10px" }}
-                          >
-                            Close
-                          </button>
-                        </form>
-                      </div>
-                    </div>
-                  )}
-                </div>
-              </div>
+            <div className="w-fit py-2 px-5 mt-1 border-2 border-customcyan rounded-xl text-center">
+              RON {product?.price}
             </div>
           </div>
         </div>
+
+        <div className="flex items-center gap-5">
+          <div className="h-80 w-80 border-2 border-customcyan rounded-2xl p-2 flex-shrink-0">
+            <img
+              className="w-full h-full object-cover rounded-2xl"
+              src={userImage}
+              alt="user image"
+            />
+          </div>
+        </div>
+
+        <div className="flex flex-col gap-2">
+          <span className="font-semibold">
+            <center>{product?.user.name}</center>
+          </span>
+          <span>
+            <center>{product?.user.address}</center>
+          </span>
+          <button onClick={handleClick} style={{ color: "green" }}>
+            Contact
+          </button>
+          {showContactInfo && (
+            <div
+              style={{
+                position: "fixed",
+                top: 0,
+                left: 0,
+                width: "100%",
+                height: "100%",
+                backgroundColor: "rgba(0, 0, 0, 0.5)",
+                display: "flex",
+                justifyContent: "center",
+                alignItems: "center",
+              }}
+            >
+              <div
+                style={{
+                  backgroundColor: "white",
+                  padding: "40px",
+                  borderRadius: "10px",
+                  width: "50%",
+                  textAlign: "center",
+                }}
+              >
+                <h2>Contact Information</h2>
+                <form>
+                  <div
+                    style={{
+                      display: "flex",
+                      flexDirection: "column",
+                      alignItems: "flex-start",
+                    }}
+                  >
+                    <label
+                      style={{
+                        display: "flex",
+                        alignItems: "center",
+                        marginBottom: "10px",
+                      }}
+                    >
+                      <span style={{ marginRight: "10px" }}>Email:</span>
+                      <input type="email" value={email} readOnly />
+                    </label>
+                    <label
+                      style={{
+                        display: "flex",
+                        alignItems: "center",
+                        marginBottom: "10px",
+                      }}
+                    >
+                      <span style={{ marginRight: "10px" }}>Phone:</span>
+                      <input type="tel" value={phone} readOnly />
+                    </label>
+                  </div>
+                  <button
+                    onClick={handleClick}
+                    style={{ color: "red", marginTop: "10px" }}
+                  >
+                    Close
+                  </button>
+                </form>
+              </div>
+            </div>
+          )}
+        </div>
+
+        <div className="flex justify-center gap-5 mb-10">
+          <button onClick={handleThumbsUp}>
+            <FaThumbsUp />
+          </button>
+          <button onClick={handleThumbsDown}>
+            <FaThumbsDown />
+          </button>
+        </div>
+
+        <div className="flex justify-center items-center gap-5">
+          <div>
+            <span className="text-green-500 text-xl font-semibold">
+              Positive Reviews: {positiveReviews}
+            </span>
+          </div>
+          <div>
+            <span className="text-red-500 text-xl font-semibold">
+              Negative Reviews: {negativeReviews}
+            </span>
+          </div>
+        </div>
+
+        <div className="flex justify-center mt-5">
+          <button onClick={handleReset} className="text-red-500">
+            Reset
+          </button>
+        </div>
       </section>
-      <section className="flex flex-col gap-5 mx-40 mt-5 mb-10 border-2 border-customcyan p-10 rounded-b-3xl">
+
+      <section className="flex flex-col gap-5 mx-10 md:mx-40 mt-5 mb-10 border-2 border-customcyan p-10 rounded-b-3xl">
         <span className="text-customcyan font-semibold">Description</span>
         <span>{product?.description}</span>
       </section>
-      {(checkId == product?.user.user_id || cookie.role == "admin") && (
+
+      {(checkId === product?.user.user_id || cookie.role === "admin") && (
         <div className="flex justify-center gap-20 mb-20">
           <form onSubmit={(e) => handleEditProduct(e)}>
             <label htmlFor="my-modal-1">
@@ -372,13 +436,13 @@ const DetailProduct = () => {
                 <div className="modal-action">
                   <button
                     type="submit"
-                    className="w-20 text-sm text-center border-2 border-customcyan bg-customcyan rounded-xl py-1 text-gray-50 font-medium duration-300 hover:cursor-pointer  active:scale-90"
+                    className="w-20 text-sm text-center border-2 border-customcyan bg-customcyan rounded-xl py-1 text-gray-50 font-medium duration-300 hover:cursor-pointer active:scale-90"
                   >
                     Update
                   </button>
                   <label
                     htmlFor="my-modal-1"
-                    className="w-20 text-sm text-center border-2 border-customcyan rounded-xl py-1 text-customcyan font-medium duration-300 hover:cursor-pointer  active:scale-90"
+                    className="w-20 text-sm text-center border-2 border-customcyan rounded-xl py-1 text-customcyan font-medium duration-300 hover:cursor-pointer active:scale-90"
                   >
                     Cancel
                   </label>
@@ -386,6 +450,7 @@ const DetailProduct = () => {
               </div>
             </div>
           </form>
+
           <form onSubmit={(e) => handleCreditCardSubmission(e)}>
             <label htmlFor="my-modal-2">
               <p className="text-4xl flex justify-center rounded-xl w-40 py-2 duration-300 hover:cursor-pointer active:scale-90 bg-customcyan text-gray-50">
@@ -426,7 +491,7 @@ const DetailProduct = () => {
                   <div className="modal-action">
                     <button
                       type="submit"
-                      className="w-20 text-sm text-center border-2 border-customcyan bg-customcyan rounded-xl py-1 text-gray-50 font-medium duration-300 hover:cursor-pointer  active:scale-90"
+                      className="w-20 text-sm text-center border-2 border-customcyan bg-customcyan rounded-xl py-1 text-gray-50 font-medium duration-300 hover:cursor-pointer active:scale-90"
                     >
                       Pay Now
                     </button>
@@ -441,6 +506,7 @@ const DetailProduct = () => {
               </div>
             </div>
           </form>
+
           <form>
             <label htmlFor="my-modal-8">
               <p className="text-4xl flex justify-center rounded-xl w-40 py-2 duration-300 hover:cursor-pointer active:scale-90 bg-red-600 text-gray-50">
@@ -462,7 +528,7 @@ const DetailProduct = () => {
                   <button
                     onClick={(e) => handleDeleteProduct(e)}
                     type="submit"
-                    className="w-36 text-sm text-center border-2 border-red-600 bg-red-600 rounded-xl py-1 text-gray-50 font-medium duration-300 hover:cursor-pointer  active:scale-90"
+                    className="w-36 text-sm text-center border-2 border-red-600 bg-red-600 rounded-xl py-1 text-gray-50 font-medium duration-300 hover:cursor-pointer active:scale-90"
                   >
                     Delete Product
                   </button>
