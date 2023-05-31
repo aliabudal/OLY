@@ -277,22 +277,6 @@ const Profile = () => {
           </form>
         </div>
       </section>
-      <section className="flex flex-col justify-center items-center mx-40 mb-20">
-        <p className="text-center text-3xl font-bold mb-10">My Products</p>
-        <div className="grid grid-cols-4 gap-10">
-          {products.map((product) => (
-            <div className="flex flex-col items-center">
-              <ProductCard
-                key={product.product_id}
-                id={product.product_id}
-                image={product.image}
-                name={product.name}
-                price={product.price}
-              />
-            </div>
-          ))}
-        </div>
-      </section>
     </Layout>
   );
 };

@@ -82,7 +82,6 @@ const DetailProduct = () => {
         setProduct(res.data);
         // check if the user is owner here, after userId state has been updated
         const owner = checkId == res.data.user.user_id;
-        console.log(owner + " " + res.data.user.user_id);
       })
       .catch((err) => {
         alert(err());
@@ -302,42 +301,45 @@ const DetailProduct = () => {
                 <p className="mb-5 pb-2 text-xl border-b-2 font-medium">
                   Submit Credit Card Info
                 </p>
-                <input
-                  onChange={(e) => setCard(e.target.value)}
-                  type="text"
-                  placeholder="Card Number"
-                  className="input input-bordered input-sm w-96 max-w-xs border-customcyan"
-                />
-                <input
-                  onChange={(e) => setOwnerName(e.target.value)}
-                  type="text"
-                  placeholder="Owner Name"
-                  className="input input-bordered input-sm w-full max-w-xs border-customcyan"
-                />
-                <input
-                  onChange={(e) => setCVV(e.target.value)}
-                  type="text"
-                  placeholder="CVV"
-                  className="input input-bordered input-sm w-full max-w-xs border-customcyan"
-                />
-                <input
-                  onChange={(e) => setExpirationDate(e.target.value)}
-                  type="text"
-                  placeholder="Expiration Date"
-                  className="input input-bordered input-sm w-full max-w-xs border-customcyan"
-                />
-                <div className="modal-action">
-                  <button
-                    type="submit"
-                    className="btn text-white bg-customcyan"
-                  >
-                    Submit
-                  </button>
-                  <a href="#" className="btn">
-                    <label htmlFor="my-modal-2" className="btn">
-                      Close
+                <div className="flex flex-col gap-5">
+                  <input
+                    onChange={(e) => setCard(e.target.value)}
+                    type="text"
+                    placeholder="Card Number"
+                    className="input input-bordered input-sm w-96 max-w-xs border-customcyan"
+                  />
+                  <input
+                    onChange={(e) => setOwnerName(e.target.value)}
+                    type="text"
+                    placeholder="Owner Name"
+                    className="input input-bordered input-sm w-full max-w-xs border-customcyan"
+                  />
+                  <input
+                    onChange={(e) => setCVV(e.target.value)}
+                    type="text"
+                    placeholder="CVV"
+                    className="input input-bordered input-sm w-full max-w-xs border-customcyan"
+                  />
+                  <input
+                    onChange={(e) => setExpirationDate(e.target.value)}
+                    type="text"
+                    placeholder="Expiration Date"
+                    className="input input-bordered input-sm w-full max-w-xs border-customcyan"
+                  />
+                  <div className="modal-action">
+                    <button
+                      type="submit"
+                      className="w-20 text-sm text-center border-2 border-customcyan bg-customcyan rounded-xl py-1 text-gray-50 font-medium duration-300 hover:cursor-pointer  active:scale-90"
+                    >
+                      Pay Now
+                    </button>
+                    <label
+                      htmlFor="my-modal-2"
+                      className="w-20 text-sm text-center border-2 border-customcyan rounded-xl py-1 text-customcyan font-medium duration-300 hover:cursor-pointer active:scale-90"
+                    >
+                      Cancel
                     </label>
-                  </a>
+                  </div>
                 </div>
               </div>
             </div>
