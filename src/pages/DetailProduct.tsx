@@ -182,12 +182,16 @@ const DetailProduct = () => {
 
   const handleEditProduct = async (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
-    const body = new FormData();
-    body.append("file", file);
-    body.append("product_name", product_name);
-    body.append("stock", stock);
-    body.append("price", price);
-    body.append("description", description);
+    const reader = new FileReader();
+    reader.readAsDataURL(file);
+    reader.onload = async () => {
+      const body = {
+        file: reader.result,
+        product_name,
+        stock,
+        price,
+        description,
+      };
 
     await axios
       .put(`products/${id}`, body, {
@@ -209,6 +213,7 @@ const DetailProduct = () => {
           showCancelButton: false,
         });
       });
+    }
   };
 
   const handleDeleteProduct = async (e: React.FormEvent<HTMLButtonElement>) => {
