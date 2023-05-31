@@ -5,6 +5,7 @@ import { BiSearchAlt } from "react-icons/bi";
 import { useCookies } from "react-cookie";
 import { useState, useEffect } from "react";
 import axios from "axios";
+import { BsFillPlusCircleFill } from "react-icons/bs";
 
 import logo from "src/assets/logo.svg";
 import Swal from "utils/Swal";
@@ -65,13 +66,13 @@ const Navbar: React.FC<NavbarProps> = ({ setSearchTerm }) => {
   };
 
   return (
-    <div className="navbar sticky top-0 z-50 bg-gray-100 lg:px-10 shadow-lg mb-20 py-4">
-      <section className="navbar-start">
+    <div className="navbar sticky top-0 z-50 bg-gray-100 lg:px-10 shadow-lg mb-20 py-4 flex justify-between">
+      <section className="flex justify-start items-center w-1/4">
         <Link to="/">
           <span className="text-2xl font-bold text-indigo-600"> OLY </span>
         </Link>
       </section>
-      <section className="navbar-center">
+      <section className="flex justify-center items-center w-1/2">
         <div className="form-control flex-row hidden lg:flex">
           <input
             type="text"
@@ -84,9 +85,18 @@ const Navbar: React.FC<NavbarProps> = ({ setSearchTerm }) => {
               <BiSearchAlt size={30} />
             </div>
           </button>
+          <div className="ml-4 sticky bottom-20 flex justify-end mr-20 text-customcyan">
+            {checkToken && (
+              <Link to="add-new-product">
+                <div className="bg-gray-50 rounded-full p-1 duration-300 hover:cursor-pointer hover:text-cyan-300 active:scale-90">
+                  <BsFillPlusCircleFill size={50} />
+                </div>
+              </Link>
+            )}
+          </div>
         </div>
       </section>
-      <section className="navbar-end gap-3">
+      <section className="flex justify-end items-center w-1/4">
         <div className="form-control flex flex-row lg:hidden">
           <input
             type="text"

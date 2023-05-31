@@ -100,15 +100,6 @@ function App() {
             />
           ))}
         </div>
-        <div className="sticky bottom-20 flex justify-end mr-20 text-customcyan">
-          {checkToken && (
-            <Link to="add-new-product">
-              <div className="bg-gray-50 rounded-full p-1 duration-300 hover:cursor-pointer hover:text-cyan-300 active:scale-90">
-                <BsFillPlusCircleFill size={50} />
-              </div>
-            </Link>
-          )}
-        </div>
       </div>
     </Layout>
   );
