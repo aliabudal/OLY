@@ -25,6 +25,8 @@ interface User {
   address: string;
   profilepicture: string;
   role: string;
+  phone: string;
+  email: string;
 }
 
 const DetailProduct = () => {
@@ -50,11 +52,20 @@ const DetailProduct = () => {
   const [ownerName, setOwnerName] = useState<string>("");
   const [CVV, setCVV] = useState<string>("");
   const [expirationDate, setExpirationDate] = useState<string>("");
+  // for contact info
+  const [email, setEmail] = useState<string>("");
+  const [phone, setPhone] = useState<string>("");
+  const [showContactInfo, setShowContactInfo] = useState(false);
 
   useEffect(() => {
     fetchData();
     fetchUserRole();
+    fetchUserDetails();
   }, []);
+
+  const handleClick = () => {
+    setShowContactInfo(!showContactInfo);
+  };
 
   const fetchUserRole = async () => {
     await axios
@@ -63,6 +74,22 @@ const DetailProduct = () => {
       })
       .then((res) => {
         setUserRole(res.data.role);
+      })
+      .catch((err) => {
+        alert(err());
+      });
+  };
+
+  const fetchUserDetails = async () => {
+    await axios
+      .get(`users`, {
+        headers: { Authorization: `Bearer ${cookie.token}` },
+      })
+      .then((res) => {
+        setEmail(res.data.email);
+        setPhone(res.data.phone);
+        console.log(email);
+        console.log(phone);
       })
       .catch((err) => {
         alert(err());
@@ -208,6 +235,76 @@ const DetailProduct = () => {
                 <div className="flex flex-col gap-2">
                   <span className="font-semibold">{product?.user.name}</span>
                   <span>{product?.user.address}</span>
+                  <button onClick={handleClick} style={{ color: "green" }}>
+                    Contact
+                  </button>
+                  {showContactInfo && (
+                    <div
+                      style={{
+                        position: "fixed",
+                        top: 0,
+                        left: 0,
+                        width: "100%",
+                        height: "100%",
+                        backgroundColor: "rgba(0, 0, 0, 0.5)",
+                        display: "flex",
+                        justifyContent: "center",
+                        alignItems: "center",
+                      }}
+                    >
+                      <div
+                        style={{
+                          backgroundColor: "white",
+                          padding: "40px",
+                          borderRadius: "10px",
+                          width: "50%",
+                          textAlign: "center",
+                        }}
+                      >
+                        <h2>Contact Information</h2>
+                        <form>
+                          <div
+                            style={{
+                              display: "flex",
+                              flexDirection: "column",
+                              alignItems: "flex-start",
+                            }}
+                          >
+                            <label
+                              style={{
+                                display: "flex",
+                                alignItems: "center",
+                                marginBottom: "10px",
+                              }}
+                            >
+                              <span style={{ marginRight: "10px" }}>
+                                Email:
+                              </span>
+                              <input type="email" value={email} readOnly />
+                            </label>
+                            <label
+                              style={{
+                                display: "flex",
+                                alignItems: "center",
+                                marginBottom: "10px",
+                              }}
+                            >
+                              <span style={{ marginRight: "10px" }}>
+                                Phone:
+                              </span>
+                              <input type="tel" value={phone} readOnly />
+                            </label>
+                          </div>
+                          <button
+                            onClick={handleClick}
+                            style={{ color: "red", marginTop: "10px" }}
+                          >
+                            Close
+                          </button>
+                        </form>
+                      </div>
+                    </div>
+                  )}
                 </div>
               </div>
             </div>
