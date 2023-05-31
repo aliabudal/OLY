@@ -191,7 +191,7 @@ const DetailProduct = () => {
           text: "Product deleted",
           showCancelButton: false,
         });
-        navigate("/profile");
+        navigate("/");
       })
       .catch((err) => {
         const { data } = err.response;
@@ -220,7 +220,7 @@ const DetailProduct = () => {
               <div className="font-bold text-xl">{product?.product_name}</div>
               <div className="text-gray-500">Stock: {product?.stock}</div>
               <div className="w-fit py-2 px-5 mt-1 border-2 border-customcyan rounded-xl text-center">
-                RON {product?.price} ,-
+                RON {product?.price}
               </div>
             </div>
             <div>

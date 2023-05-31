@@ -23,12 +23,12 @@ const AddNewProduct = () => {
   const [category, setCategory] = useState<string>("");
 
   useEffect(() => {
-    if (name && stock && price && description && category) {
+    if (name && stock && price && description && category && image) {
       setDisabled(false);
     } else {
       setDisabled(true);
     }
-  }, [name, stock, price, description, category]);
+  }, [name, stock, price, description, category, image]);
 
   const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
     setLoading(true);
@@ -102,7 +102,7 @@ const AddNewProduct = () => {
                 />
               </div>
               <div className="text-gray-500">
-                <p>Stock: {stock} pcs</p>
+                <p>Stock: {stock} pieces</p>
                 <input
                   onChange={(e) => setStock(e.target.value)}
                   type="text"
@@ -110,29 +110,36 @@ const AddNewProduct = () => {
                   className="file-input file-input-bordered px-3 mt-1 w-full border-2 border-customcyan max-w-xs"
                 />
               </div>
-              <div>
-                <div className="flex items-center gap-3 font-bold text-lg">
-                  <span>RON</span>
-                  <span className="">
-                    {price}
-                    <span> ,-</span>
-                  </span>
-                </div>
-                <div>
-                  <p>Category:</p>
-                  <select onChange={(e) => setCategory(e.target.value)}>
-                    <option value="">Select category</option>
-                    <option value="electronics">Electronics</option>
-                    <option value="clothing">Clothing</option>
-                    <option value="cars">Cars</option>
-                  </select>
-                </div>
+              <div className="flex items-center gap-3">
                 <input
                   onChange={(e) => setPrice(e.target.value)}
                   type="text"
                   placeholder="Type product's price"
-                  className="file-input file-input-bordered px-3 mt-1 w-full border-2 border-customcyan max-w-xs"
+                  className="file-input file-input-bordered px-3 mt-1 border-2 border-customcyan"
                 />
+                <div className="flex items-center gap-3 font-bold text-lg">
+                  <span>RON</span>
+                  <span className="">{price}</span>
+                </div>
+              </div>
+
+              <div>
+                <div style={{ display: "flex", alignItems: "center" }}>
+                  <p style={{ marginRight: "10px", fontSize: "20px" }}>
+                    Category:
+                  </p>
+                  <select
+                    style={{ fontSize: "20px" }}
+                    onChange={(e) => setCategory(e.target.value)}
+                  >
+                    <option value="">Select category</option>
+                    <option value="electronics">Electronics</option>
+                    <option value="clothing">Clothing</option>
+                    <option value="cars">Cars</option>
+                    <option value="furniture">Furniture</option>
+                    <option value="others">Others</option>
+                  </select>
+                </div>
               </div>
             </div>
           </div>
